@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Document</title>
+    <style>
+        #main {
+            height: 200px;
+            width: 600px;/*50%;*/
+            background-color: navy;
+            color:white;
+            border: 10px solid black;
+            margin: 0 auto;
+            /* margin-top: 100px;*/
+        }
+        #buttons{
+            width: 150px;/*50%;*/
+            /*height: 50px;/*50%;*/
+            margin: 0 auto;
+            padding: 2em;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="main">
+        <!--h1>Click "Get Info" to provide your details</h1-->
+
+        <h1>Hi, "your full name goes here"!!!</h1>
+        <p>You were born on <strong>"Your birth date goes here"</strong></p>
+        <p>That day was <strong>"The date of week goes here"</strong></p>
+        <p>And untill now, you have had <strong>"n"</strong> birthdays on that day of week</p>
+
+
+    </div>
+    <div id="buttons">
+        <input type="button" onclick="loadWindow()" value="Get Info">
+        <input type="button" onclick="refreshWindow()" value="Refresh">
+
+    </div>
+<script>
+    addEventListener("load",()=>{
+        /*Afegeix el codi aquí per tal que faci tot el que es
+        * demana quan carreguem inicialment la pàgina*/
+       let main = document.getElementById("main");
+       main.innerHTML = "";
+       if(document.cookie.length == 0) {
+           let h2 = document.createElement("h2");
+           h2.innerText = 'Click "Get Info" to provide your details';
+           main.appendChild(h2);
+       }else {
+        let cookie = document.cookie.split(";")
+        let name = cookie[0].split("=")[1];
+        let surname = cookie[1].split("=")[1];
+        let dateBirth = cookie[2].split("=")[1];
+
+        let nameAndSurname = document.createElement("h1");
+        nameAndSurname.innerText = "Hi, " + name + " " + surname + "!!!";
+
+        let age = document.createElement("p");
+        age.innerHTML = "You were born on <strong>" + dateBirth + "</strong>";
+
+        let day = document.createElement("p");
+        let nameDay = new Date(dateBirth);
+        const options = { weekday: "long"};
+        day.innerHTML = "That day was <strong>"+ new Intl.DateTimeFormat('en-US', options).format(nameDay) +"</strong>";
+
+        let times = document.createElement("p");
+        let counter = 0;
+        let year = new Date(dateBirth)
+        while(year.getFullYear() <= 2022) {
+            year.setFullYear(year.getFullYear() + 1)
+            if(year.getDay() === 5) {
+                counter++;
+            }
+        }
+        times.innerHTML = "And untill now, you have had <strong>" + counter + "</strong> birthdays on that day of week"
+
+        main.appendChild(nameAndSurname);
+        main.appendChild(age);
+        main.appendChild(day);
+        main.appendChild(times);
+       }
+    })
+
+    /*Code adapted from www.w3schools.com*/
+    const getCookieValue= (cookieStr, cookieName)=>{
+        let name = cookieName + "=";
+        let ca = cookieStr.split(';');
+        for(let i = 0; i <ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+
+
+    const loadWindow=()=>{
+        /*Afegeix el codi aquí per tal que mostri la pàgina Secondary.html*/
+        window.location.assign("http://127.0.0.1:5500/ExtraordinariaUF1/Secondary.html")
+    }
+
+    const refreshWindow=()=>{
+        /*Afegeix el codi aquí per tal que actualitzi la pàgina*/
+        window.location.reload();
+    }
+
+
+</script>
+
+</body>
+</html>
